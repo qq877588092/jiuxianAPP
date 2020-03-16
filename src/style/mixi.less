@@ -1,0 +1,22 @@
+// 设计分辨率对应的根字体尺寸
+@remSize: 37.5;
+
+//页面主题颜色
+@black: #222;
+//头部字体颜色
+@yellow: #ffcd32;
+
+// 对样式样式的封装
+.w(@px) {
+  width: unit(@px / @remSize, rem);
+  /*
+     width: unit(187.5/37.5,rem);
+     width:5rem
+    */
+}
+.h(@px) {
+  height: unit(@px / @remSize, rem);
+}
+.border(@w,@borderColor){
+  border: @w solid @borderColor;
+}
