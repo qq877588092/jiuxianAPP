@@ -116,7 +116,7 @@ export default {
 <style lang="less" scoped>
 @import "../../style/index.less";
 .tab {
-  z-index: 8888;
+  z-index: 1888;
   .w(375);
   .h(42);
   position: fixed;

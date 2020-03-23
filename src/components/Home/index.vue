@@ -57,83 +57,50 @@
     </div>
     <div class="hotList">
       <ul>
-        <li>
+        <li
+          v-for="(item,index) in list"
+          :key="index"
+        >
           <a href="#">
-            <span class="spanList">
-              <i>满减</i>
+            <span
+              class="spanList"
+              v-if="item.promo"
+            >
+              <i
+                v-for="(e,i) in item.promo"
+                :key="i"
+                :style="'background:'+e.backColor"
+              >{{e.name}}</i>
+            </span>
+            <span
+              class="spanList"
+              v-else
+            >
+              <i>满赠</i>
               <i>限时抢购</i>
-            </span>
-            <div class="shopSrc"><img
-                src="https://img10.jiuxian.com/2017/1122/ef4d95c7620e40ddba8debbaa3da21234.jpg"
-                alt=""
-              ></div>
-            <span class="title">西班牙欧瑞安门萨古藤干红葡萄酒750ml*6</span>
-            <span class="pic">
-              <i>￥88</i>
-              <i>￥118</i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="spanList">
-              <i>手机专享</i>
               <i>满减</i>
             </span>
             <div class="shopSrc"><img
-                src="https://img10.jiuxian.com/2017/1122/ef4d95c7620e40ddba8debbaa3da21234.jpg"
+                :src='item.src'
                 alt=""
               ></div>
-            <span class="title">西班牙欧瑞安门萨古藤干红葡萄酒750ml*6</span>
+            <span class="title">{{item.title}}</span>
             <span class="pic">
-              <i>￥88</i>
-              <i>￥118</i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="spanList">
-              <i>掌上秒拍</i>
-              <i>手机专享</i>
-              <i>满减</i>
-            </span>
-            <div class="shopSrc"><img
-                src="https://img10.jiuxian.com/2017/1122/ef4d95c7620e40ddba8debbaa3da21234.jpg"
-                alt=""
-              ></div>
-            <span class="title">西班牙欧瑞安门萨古藤干红葡萄酒750ml*6</span>
-            <span class="pic">
-              <i>￥88</i>
-              <i>￥118</i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="spanList">
-              <i>掌上秒拍</i>
-              <i>手机专享</i>
-              <i>满减</i>
-            </span>
-            <div class="shopSrc"><img
-                src="https://img10.jiuxian.com/2017/1122/ef4d95c7620e40ddba8debbaa3da21234.jpg"
-                alt=""
-              ></div>
-            <span class="title">西班牙欧瑞安门萨古藤干红葡萄酒750ml*6</span>
-            <span class="pic">
-              <i>￥88</i>
-              <i>￥118</i>
+              <i>￥{{item.price}}</i>
             </span>
           </a>
         </li>
       </ul>
+    </div>
+    <div class="bottomTxt">
+      <h6>亲~看完了哦</h6>
     </div>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 import { Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, NoticeBar } from 'vant'
+import { getHomeData } from '../../api/api'
 // 搜索
 Vue.use(Search)
 // 轮播图懒加载
@@ -184,7 +151,9 @@ export default {
         '/img/56ebc6af1c6a47a3a7eb3f23054126d6.jpg'
       ],
       value: '',
-      scroll: false
+      scroll: false,
+      list: '',
+      num: 69
     }
   },
   methods: {
@@ -193,7 +162,7 @@ export default {
       /* document.documentElement.scrollTop在安卓上失效解决方案：
       const top = document.documentElement.scrollTop||document.body.scrollTop; */
       const top = document.documentElement.scrollTop || document.body.scrollTop
-      console.log(top)
+      // console.log(top)
       if (top >= 146) {
         this.scroll = true
       } else {
@@ -201,12 +170,16 @@ export default {
       }
     }
   },
-  mounted () {
+  async mounted () {
     // 设置用间隔时间1s，每隔一秒调用一次。
     setInterval(() => {
       this.leftIcon = !this.leftIcon
     }, 500)
     window.addEventListener('scroll', this.menu)
+    // 获取数据
+    const { datalist } = await getHomeData(this.num)
+    this.list = datalist
+    console.log(this.list)
   }
 }
 </script>
@@ -316,6 +289,14 @@ export default {
         }
       }
     }
+  }
+  .bottomTxt {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    font-size: 16px;
+    color: #ccc;
   }
 }
 </style>
